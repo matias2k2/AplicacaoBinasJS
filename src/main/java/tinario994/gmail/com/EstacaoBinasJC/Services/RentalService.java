@@ -95,9 +95,9 @@ public class RentalService {
             Bicycle bicycle = bicycleRepository.findById(dto.getBicycle().getId())
                     .orElseThrow(() -> new EntityNotFoundException(
                             "Bicicleta não encontrada com ID: " + dto.getBicycle().getId()));
-            entity.setBicycle(bicycle);
+            //entity.setBicycle(bicycle);
         } else {
-            entity.setBicycle(null); // Remover associação se necessário
+            //entity.setBicycle(null); // Remover associação se necessário
         }
     }
 }

@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -37,11 +38,12 @@ public class Station implements Serializable {
 
     private String location;
 
-    @OneToMany(mappedBy = "currentStation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "currentStation", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
     @JsonManagedReference
     private Set<Bicycle> bicycles = new HashSet<>();
 
-    public Station() {}
+    public Station() {
+    }
 
     public Station(Integer id, String location, String name) {
         this.id = id;
@@ -50,9 +52,28 @@ public class Station implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Station [id=" + id + ", name=" + name + ", location=" + location + ", bicycles=" + bicycles + "]";
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
     }
 
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Station other = (Station) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
 }

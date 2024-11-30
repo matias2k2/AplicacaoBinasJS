@@ -24,8 +24,14 @@ public class StationDTO implements Serializable {
         this.id = entityStation.getId();
         this.name = entityStation.getName();
         this.location = entityStation.getLocation();
-        entityStation.getBicycles().forEach(bicycle -> this.bicycles.add(new BicycleDTO(bicycle)));
-
+    
+        // Inclui bicicletas no DTO sem criar ciclos
+        if (entityStation.getBicycles() != null) {
+            entityStation.getBicycles().forEach(bicycle -> {
+                this.bicycles.add(new BicycleDTO(bicycle, false)); // Evita incluir StationDTO dentro de BicycleDTO
+            });
+        }
     }
+    
 
 }

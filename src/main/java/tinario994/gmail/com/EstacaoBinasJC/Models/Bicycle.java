@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -40,13 +42,14 @@ public class Bicycle implements Serializable {
     @Column(unique = true, nullable = false)
     private String bleBeaconId;
 
+    
     @ManyToOne
     @JoinColumn(name = "station_id")
-    @JsonManagedReference
+    @JsonBackReference
     private Station currentStation;
 
-    @OneToMany(mappedBy = "bicycle", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Rental> rentals = new ArrayList<>();
+    //@OneToMany(mappedBy = "bicycle", cascade = CascadeType.ALL, orphanRemoval = true)
+    //private List<Rental> rentals = new ArrayList<>();
 
     public Bicycle() {}
 
@@ -57,5 +60,34 @@ public class Bicycle implements Serializable {
         this.bleBeaconId = bleBeaconId;
         this.currentStation = currentStation;
     }
+    
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Bicycle other = (Bicycle) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    
+    
 }
 
