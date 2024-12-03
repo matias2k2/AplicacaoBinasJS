@@ -79,7 +79,7 @@ public class RentalService {
     private void copyDtoToEntity(RentalDTO dto, Rental entity) {
         entity.setRentalStart(dto.getRentalStart());
         entity.setRentalEnd(dto.getRentalEnd());
-
+    
         // Associar usuário ao aluguel
         if (dto.getUser() != null && dto.getUser().getId() != null) {
             User user = userRepository.findById(dto.getUser().getId())
@@ -89,15 +89,16 @@ public class RentalService {
         } else {
             entity.setUser(null); // Remover associação se necessário
         }
-
+    
         // Associar bicicleta ao aluguel
         if (dto.getBicycle() != null && dto.getBicycle().getId() != null) {
             Bicycle bicycle = bicycleRepository.findById(dto.getBicycle().getId())
                     .orElseThrow(() -> new EntityNotFoundException(
                             "Bicicleta não encontrada com ID: " + dto.getBicycle().getId()));
-            //entity.setBicycle(bicycle);
+            entity.setBicycle(bicycle);
         } else {
-            //entity.setBicycle(null); // Remover associação se necessário
+            entity.setBicycle(null); // Remover associação se necessário
         }
     }
+
 }

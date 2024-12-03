@@ -42,16 +42,16 @@ public class Bicycle implements Serializable {
     @Column(unique = true, nullable = false)
     private String bleBeaconId;
 
-    
     @ManyToOne
     @JoinColumn(name = "station_id")
     @JsonBackReference
     private Station currentStation;
 
-    //@OneToMany(mappedBy = "bicycle", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<Rental> rentals = new ArrayList<>();
+    @OneToMany(mappedBy = "bicycle") // Certifique-se de usar "bicycle" como está na classe Rental
+    private List<Rental> rentals = new ArrayList<>();
 
-    public Bicycle() {}
+    public Bicycle() {
+    }
 
     public Bicycle(Integer id, String marca, String color, String bleBeaconId, Station currentStation) {
         this.id = id;
@@ -60,7 +60,6 @@ public class Bicycle implements Serializable {
         this.bleBeaconId = bleBeaconId;
         this.currentStation = currentStation;
     }
-    
 
     @Override
     public int hashCode() {
@@ -87,7 +86,4 @@ public class Bicycle implements Serializable {
         return true;
     }
 
-    
-    
 }
-

@@ -25,14 +25,20 @@ public class RentalDTO {
         this.bicycle = bicycle;
     }
 
-    public RentalDTO(Rental entity) {
+    public RentalDTO(Rental entity, boolean includeBicycle) {
         this.id = entity.getId();
         this.rentalStart = entity.getRentalStart();
         this.rentalEnd = entity.getRentalEnd();
         this.user = new UserDTO(entity.getUser());
-       // if (entity.getBicycle() != null) {
-       //     this.bicycle = new BicycleDTO(entity.getBicycle(), false);
-        //}
+
+        if (includeBicycle && entity.getBicycle() != null) {
+            this.bicycle = new BicycleDTO(entity.getBicycle(), false);
+        }
+    }
+
+    // Construtor padrão de conversão
+    public RentalDTO(Rental entity) {
+        this(entity, true);
     }
 
 }
